@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "Common">
+
+	 <resultMap id="accountVo" type="com.lime.account.vo.AccountVo">
+		<result property="accountSeq" column="ACCOUNT_SEQ"/>
+		<result property="profitCost" column="PROFIT_COST"/>
+		<result property="bigGroup" column="BIG_GROUP"/>
+		<result property="middleGroup" column="MIDDLE_GROUP"/>
+		<result property="smallGroup" column="SMALL_GROUP"/>
+		<result property="detailGroup" column="DETAIL_GROUP"/>
+		<result property="comment" column="COMMENTS"/>
+		<result property="transactionMoney" column="TRANSACTION_MONEY"/>
+		<result property="transactionDate" column="TRANSACTION_DATE"/>
+		<result property="writer" column="WRITER"/>
+		<result property="regDate" column="REG_DATE"/>
+	</resultMap>
+
+	<!-- 	코드 테이블 에서 셀렉트 박스 리스트 검색 -->
+	<select id="selectCombo" parameterType="map" resultType="egovMap">
+		SELECT CODE, COM_KOR FROM CODE_MASTER
+		WHERE CATEGORY = #{category} AND USE_YN ='Y'
+	</select>
+	
+	<insert id="accountInsertPro" parameterType="accountVo" useGeneratedKeys="true" keyProperty="accountSeq" keyColumn="ACCOUNT_SEQ">
+    	INSERT INTO ACCOUNT_TB
+    	(ACCOUNT_SEQ, PROFIT_COST, BIG_GROUP, MIDDLE_GROUP, SMALL_GROUP, DETAIL_GROUP, COMMENTS, TRANSACTION_MONEY, TRANSACTION_DATE, WRITER, REG_DATE) 
+    	VALUES
+    	(ACCOUNT_SEQ.NEXTVAL, #{profitCost}, #{bigGroup}, #{middleGroup}, #{smallGroup}, #{detailGroup}, #{comment}, #{transactionMoney}, #{transactionDate}, #{writer}, SYSDATE)
+	</insert>
+
+	
+	<select id="accountDetail" parameterType="int" resultType="egovMap">
+		SELECT * 
+		FROM ACCOUNT_TB 
+		WHERE ACCOUNT_SEQ=#{accountSeq}
+	</select>
+	
+	<update id="accountUpdatePro" parameterType="accountVo">
+		UPDATE ACCOUNT_TB SET 
+		PROFIT_COST=#{profitCost}, BIG_GROUP=#{bigGroup}, MIDDLE_GROUP=#{middleGroup}, SMALL_GROUP=#{smallGroup}, DETAIL_GROUP=#{detailGroup}, COMMENTS=#{comment}, TRANSACTION_MONEY=#{transactionMoney}, TRANSACTION_DATE=#{transactionDate}, REG_DATE=SYSDATE 
+		WHERE ACCOUNT_SEQ=#{accountSeq}
+	</update>	
+	
+	
+	<select id="listCount" resultType="int">		
+		SELECT COUNT(*) FROM ACCOUNT_TB
+	</select>
+	
+	<!-- MySQL 페이징 처리 SQL -->
+	<!-- <select id="selectList" resultType="accountVo">
+	    SELECT ACCOUNT_SEQ, PROFIT_COST, BIG_GROUP, MIDDLE_GROUP, SMALL_GROUP, DETAIL_GROUP,
+	    PROFIT_COST, BIG_GROUP, MIDDLE_GROUP, SMALL_GROUP, DETAIL_GROUP,
+	    COMMENTS, TRANSACTION_MONEY, TRANSACTION_DATE, WRITER
+	    FROM ACCOUNT_TB
+	    LIMIT #{end} OFFSET #{start}
+	</select> -->
+	
+	<!-- Oracle 페이징 처리 SQL -->
+	<!-- <select id="selectList" parameterType="Map" resultType="accountVo" resultMap="accountVo">
+    	SELECT * FROM (SELECT ACCOUNT_SEQ , PROFIT_COST, BIG_GROUP, MIDDLE_GROUP, SMALL_GROUP, DETAIL_GROUP,
+        COMMENTS, TRANSACTION_MONEY, TRANSACTION_DATE, WRITER, REG_DATE,  
+        ROW_NUMBER() OVER (ORDER BY TO_NUMBER(ACCOUNT_SEQ) DESC) AS rn
+        FROM ACCOUNT_TB WHERE 1=1) WHERE rn BETWEEN #{start}+1 AND #{end}
+	</select> -->
+	
+	<select id="excelDownload" resultType="accountVo" resultMap="accountVo">
+		SELECT * FROM account_tb ORDER BY account_seq DESC
+	</select>
+	
+	
+	<select id="selectList" parameterType="Map" resultType="accountVo" resultMap="accountVo">
+    	SELECT * FROM (
+		    SELECT
+		        A.ACCOUNT_SEQ,
+		        CASE WHEN A.PROFIT_COST IS NOT NULL THEN CM1.COM_KOR ELSE NULL END AS PROFIT_COST,
+		        CASE WHEN A.BIG_GROUP IS NOT NULL THEN CM2.COM_KOR ELSE NULL END AS BIG_GROUP,
+		        CASE WHEN A.MIDDLE_GROUP IS NOT NULL THEN CM3.COM_KOR ELSE NULL END AS MIDDLE_GROUP,
+		        CASE WHEN A.SMALL_GROUP IS NOT NULL THEN CM4.COM_KOR ELSE NULL END AS SMALL_GROUP,
+		        CASE WHEN A.DETAIL_GROUP IS NOT NULL THEN CM5.COM_KOR ELSE NULL END AS DETAIL_GROUP,
+		        A.COMMENTS,
+		        A.TRANSACTION_MONEY,
+		        A.TRANSACTION_DATE,
+		        A.WRITER,
+		        A.REG_DATE,
+		        ROW_NUMBER() OVER (ORDER BY TO_NUMBER(A.ACCOUNT_SEQ) DESC) AS rn
+		    FROM ACCOUNT_TB A
+		    LEFT JOIN CODE_MASTER CM1 ON A.PROFIT_COST = CM1.CODE
+		    LEFT JOIN CODE_MASTER CM2 ON A.BIG_GROUP = CM2.CODE
+		    LEFT JOIN CODE_MASTER CM3 ON A.MIDDLE_GROUP = CM3.CODE
+		    LEFT JOIN CODE_MASTER CM4 ON A.SMALL_GROUP = CM4.CODE
+		    LEFT JOIN CODE_MASTER CM5 ON A.DETAIL_GROUP = CM5.CODE
+		    WHERE 1=1
+		)
+		WHERE rn BETWEEN #{start}+1 AND #{end}
+    	
+	</select>
+	
+	
+</mapper>

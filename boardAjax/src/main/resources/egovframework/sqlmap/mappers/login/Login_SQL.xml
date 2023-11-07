@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Login">
+
+	<resultMap id="userVO" type="com.lime.user.vo.UserVO">
+		<result property="userSeq" column="User_seq"/>
+		<result property="userId" column="user_id"/>
+		<result property="pwd" column="pwd"/>
+		<result property="userName" column="user_name"/>
+		<result property="regDt" column="reg_dt"/>
+		<result property="userEmail" column="user_email"/>
+	</resultMap>
+	
+	<!-- 아이디 중복 체크 -->
+	<select id="idCheck" parameterType="UserVo" resultType="int">
+		SELECT COUNT(*) FROM USER_TB WHERE USER_ID = #{userId}
+	</select>
+	
+	<!-- 이메일 중복 체크 -->
+	<select id="emailCheck" parameterType="UserVo" resultType="int">
+		SELECT COUNT(*) FROM USER_TB WHERE USER_EMAIL = #{eMail}
+	</select>
+	
+	<!-- 휴대폰 중복 체크 -->
+	<select id="cellCheck" parameterType="UserVo" resultType="int">
+		SELECT COUNT(*) FROM USER_TB WHERE USER_CELNUM = #{phoneNumber}
+	</select>
+	
+	<!-- 회원가입 -->
+	<insert id="userInsert" parameterType="UserVo">
+		INSERT INTO USER_TB(USER_SEQ, USER_ID, PWD, USER_NAME, REG_DT, USER_AGE, USER_PSNUM, USER_GENDER, USER_EMAIL, USER_CELNUM, USER_PLACE) 
+		VALUES(USER_SEQ.NEXTVAL, #{userId}, #{pwd}, #{userName}, SYSDATE, #{userAge}, #{userPsnum}, #{userGender}, #{userEmail}, #{userCelnum}, #{userPlace})
+	</insert>
+	
+	<!-- 로그인 -->
+	<select id="selectUserLogin" parameterType="UserVo" resultType="int">
+		SELECT COUNT(*) FROM USER_TB WHERE USER_ID = #{userId} AND PWD = #{pwd}
+	</select>
+	
+</mapper>
