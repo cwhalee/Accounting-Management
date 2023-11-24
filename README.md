@@ -16,7 +16,7 @@
   
   **Back**
   
-  <img src="https://img.shields.io/badge/java-007396?style=flat-square&logo=java&logoColor=white"/> 
+  <img src="https://img.shields.io/badge/java-007396?style=flat-square&logo=java&logoColor=white"/> <img src="https://img.shields.io/badge/Spring-6DB33F?style=flat-square&logo=Spring&logoColor=white"/>
 
   **DataBase**
 
@@ -30,14 +30,32 @@
   
   Daum, Google, Naver
   
----
   
 ## 기능설명
 
+### Login page
+---
+![기능설명1](./boardAjax/src/main/webapp/assets/캡처1.PNG)
 
+### Sign Up Page
+--- 
+![기능설명1](./boardAjax/src/main/webapp/assets/캡처2.PNG)
 
+### Main Page (List)
+--- 
+![기능설명1](./boardAjax/src/main/webapp/assets/캡처3.PNG)
 
+### Insert Page (MultiSelectComboBox)
+--- 
+![기능설명1](./boardAjax/src/main/webapp/assets/캡처4.PNG)
 
+### Insert Page (DatePicker)
+--- 
+![기능설명1](./boardAjax/src/main/webapp/assets/캡처5.PNG)
+
+### Main Page(Exel Download)
+--- 
+![기능설명1](./boardAjax/src/main/webapp/assets/캡처6.PNG)
 
 ---
 
