@@ -34,9 +34,8 @@
   
 ## 기능설명
 
-![기능설명1](https://github.com/ChangLeeLim/Stay_Whale_Project/assets/129818004/04ae79ce-5822-41e1-9bdf-ec4f5b6f3974)
 
-![기능설명3](https://github.com/ChangLeeLim/Stay_Whale_Project/assets/129818004/80d1b0a6-75a0-43be-a839-3dcad32b9839)
+
 
 
 
