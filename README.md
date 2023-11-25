@@ -33,11 +33,11 @@
   
 ## 기능설명
 
-### Login page
+### Login page 
 ---
 ![기능설명1](./boardAjax/src/main/webapp/assets/캡처1.PNG)
 
-### Sign Up Page
+### Sign Up Page (Google의 E-mail인증 서비스 & naver 휴대폰 인증 서비스 & 다음 주소 API 사용)
 --- 
 ![기능설명1](./boardAjax/src/main/webapp/assets/캡처2.PNG)
 
