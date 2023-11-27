@@ -1,4 +1,4 @@
-# 
+# Spring & Oracle (Accounting-Management)
 
 ## 프로젝트 개요
 이 프로젝트는 Ajax를 통해 다중콤보박스 구현과 네이버/카카오/구글의 OpenAPI를 활용,엑셀파일 다운 기능을 학습하기 위한 프로젝트입니다.
